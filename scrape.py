@@ -156,7 +156,8 @@ def scrapeSongs(driver_path, songs_file):
             }
             comments_obj.append(obj)
 
-        auxComments = commentsCol.insert_many(comments_obj)
+        if len(comments_obj) >0:
+            auxComments = commentsCol.insert_many(comments_obj)
 
         responses_obj = []
 
@@ -176,7 +177,8 @@ def scrapeSongs(driver_path, songs_file):
                     }
                     responses_obj.append(obj)
         
-        auxResponses = commentsCol.insert_many(responses_obj)
+        if len(responses_obj) > 0:
+            auxResponses = commentsCol.insert_many(responses_obj)
 
         print('Song ', i)
         i+=1
