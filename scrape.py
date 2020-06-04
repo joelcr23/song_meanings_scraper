@@ -108,7 +108,7 @@ def scrapeSongs(driver_path, songs_file):
     commentsCol = database["comments"]
     
     mainArtists = pd.read_csv(songs_file)
-    mainSongs = pd.read_csv('mainSongs.csv')
+    mainSongs = pd.read_csv('mainSongs0.csv')
     mainArtists.columns = ['ID', 'ARTIST', 'ARTIST_SONGS_LINK', 'TOTAL_SONGS']
     mainSongs.columns = ['ID','ARTIST', 'SONG_NAME', 'SONG_LINK', 'LYRIC' ]
     songLinks = mainSongs['SONG_LINK']
@@ -181,6 +181,7 @@ if __name__ == "__main__":
 
     songs_file = 'mainArtists.csv'        
 
-    driver_path= "/Users/joel/Documents/ad/chromedriver"
+    #driver_path= "/Users/joel/Documents/ad/chromedriver"
+    driver_path= "/usr/bin/chromedriver"
 
     scrapeSongs(driver_path, songs_file)
