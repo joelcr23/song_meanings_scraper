@@ -12,6 +12,7 @@ def set_driver(driver_path):
     options.add_argument('--ignore-certificate-errors')
     options.add_argument('--incognito')
     options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
     driver = webdriver.Chrome(driver_path, chrome_options=options)
     return driver
 
