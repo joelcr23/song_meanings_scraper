@@ -88,7 +88,7 @@ def getSongData(url, driver_path):
 
         # Boton siguiente pagina de comentarios
         botones = driver.find_element_by_id('pagination').find_elements_by_tag_name('a')
-        if len(botobes) <= 0:
+        if len(botones) <= 0:
             break
         siguiente = botones[-1]
         if(siguiente.text != 'next'):
