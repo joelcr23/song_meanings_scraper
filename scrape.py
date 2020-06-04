@@ -56,34 +56,43 @@ def getSongData(url, driver_path):
         soup = BeautifulSoup(page_source, 'lxml')
         comments = soup.find('ul', class_='comments-list').find_all('li', id=re.compile('^fullcomment-'))
 
+        c = 0
         for comment in comments:
 
-            comentRating = comment.find('div', class_='numb-holder').find('strong').getText()       
+            try:
 
-            answersObj = comment.find('ul', class_='answers').extract()
-            signObj = comment.find('div', class_='sign').extract()
-            commentObj = comment.find('div', class_='text')
+                comentRating = comment.find('div', class_='numb-holder').find('strong').getText()       
 
-            #print('commentObj:: ', commentObj)
-            commentType = commentObj.find('strong').extract().getText()
-            commentText = commentObj.getText()
-            commentUserName = signObj.find('a', class_='author')['title']
-            commentDate = signObj.find('em').getText()
+                answersObj = comment.find('ul', class_='answers').extract()
+                signObj = comment.find('div', class_='sign').extract()
+                commentObj = comment.find('div', class_='text')
 
-            arr = answersObj.find_all('div', class_='answer-holder')
-            commentTotAns = len(arr)
-            commentAnswers = []
-            for ans in arr:
-                ansRating = ans.find('div', class_='numb-holder').find('strong').getText()
-                ansSignObj = ans.find('div', class_='sign').extract()
-                ansDate = ansSignObj.find('em').getText()
-                ansAuthor = ansSignObj.find('a', class_='author')['title']
-                answerText = ans.find('div', class_='text').getText()
+                #print('commentObj:: ', commentObj)
+                commentType = commentObj.find('strong').extract().getText()
+                commentText = commentObj.getText()
+                commentUserName = signObj.find('a', class_='author')['title']
+                commentDate = signObj.find('em').getText()
 
-                commentAnswers.append([ansRating, ansDate, ansAuthor, answerText])
+                arr = answersObj.find_all('div', class_='answer-holder')
+                commentTotAns = len(arr)
+                commentAnswers = []
+                for ans in arr:
+                    ansRating = ans.find('div', class_='numb-holder').find('strong').getText()
+                    ansSignObj = ans.find('div', class_='sign').extract()
+                    ansDate = ansSignObj.find('em').getText()
+                    ansAuthor = ansSignObj.find('a', class_='author')['title']
+                    answerText = ans.find('div', class_='text').getText()
 
-            all_comments.append([ comentRating, commentType, commentText, commentUserName, commentDate, commentTotAns])
-            all_responses.append(commentAnswers)
+                    commentAnswers.append([ansRating, ansDate, ansAuthor, answerText])
+
+                all_comments.append([ comentRating, commentType, commentText, commentUserName, commentDate, commentTotAns])
+                all_responses.append(commentAnswers)
+
+            except:
+                print('Error in song:: ', url)
+                print('On comment:: ', c)
+
+            c+=1
 
 
         # Boton siguiente pagina de comentarios
