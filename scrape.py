@@ -94,19 +94,22 @@ def getSongData(url, driver_path):
 
             c+=1
 
-
-        # Boton siguiente pagina de comentarios
-        botones = driver.find_element_by_id('pagination').find_elements_by_tag_name('a')
-        if len(botones) <= 0:
+        try:
+            # Boton siguiente pagina de comentarios
+            botones = driver.find_element_by_id('pagination').find_elements_by_tag_name('a')
+            if len(botones) <= 0:
+                break
+            siguiente = botones[-1]
+            if(siguiente.text != 'next'):
+                # Termina la paginación de comentarios
+                break
+            # Para evitar overlapping de ads con el boton siguiente se hace scroll hasta el final
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            siguiente.click()
+            time.sleep(2)
+        except:
+            print('Error in song:: ', url)
             break
-        siguiente = botones[-1]
-        if(siguiente.text != 'next'):
-            # Termina la paginación de comentarios
-            break
-        # Para evitar overlapping de ads con el boton siguiente se hace scroll hasta el final
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        siguiente.click()
-        time.sleep(2)
 
     driver.close()
     return (lyric, all_comments, all_responses)
@@ -132,6 +135,10 @@ def scrapeSongs(driver_path, songs_file):
         comments = []
         responses = []
         
+        if i < 699:
+            i+=1
+            continue
+
         # try:
         lyric, comments, responses = getSongData(song[1]['SONG_LINK'], driver_path)
         # except:
@@ -189,7 +196,7 @@ def scrapeSongs(driver_path, songs_file):
         if len(responses_obj) > 0:
             auxResponses = commentsCol.insert_many(responses_obj)
 
-        print('Song ', i)
+        print('Done Song ', i)
         i+=1
 
 if __name__ == "__main__":
