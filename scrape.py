@@ -130,19 +130,26 @@ def scrapeSongs(driver_path, songs_file):
     songLinks = mainSongs['SONG_LINK']
     
     i = 0
+    totFatalErrors = 0
     for song in mainSongs.iterrows():
         lyric = ''
         comments = []
         responses = []
         
-        if i < 699:
+        if i < 758:
             i+=1
             continue
 
-        # try:
-        lyric, comments, responses = getSongData(song[1]['SONG_LINK'], driver_path)
-        # except:
-        #     print('Error in song ', i)
+        try:
+            lyric, comments, responses = getSongData(song[1]['SONG_LINK'], driver_path)
+        except:
+            print('General Error in song ', i)
+            i+=1
+            totFatalErrors+=1
+            if totFatalErrors <= 10:
+                continue
+            else:
+                print('Abort')
             
         
         # Store song data in mongo
